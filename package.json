@@ -1,6 +1,6 @@
 {
   "name": "winsw-wrapper",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "",
   "main": "dist/src/index.js",
   "types": "types/index.d.ts",
@@ -18,6 +18,10 @@
   },
   "author": "lunnlew",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lunnlew/winsw-wrapper"
+  },
   "dependencies": {
     "tslib": "^2.3.1",
     "typescript": "^4.5.2",
