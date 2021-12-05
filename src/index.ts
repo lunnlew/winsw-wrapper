@@ -364,7 +364,7 @@ class WinswWrapper extends EventEmitter {
     install() {
         const xml = this.generateXml();
         fs.writeFileSync(path.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
-        console.log(xml);
+        // console.log(xml);
         this.createWrapperExe();
         this.run('install');
         return this;
