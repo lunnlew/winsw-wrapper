@@ -396,6 +396,30 @@ class WinswWrapper extends events_1.default {
         return this;
     }
     /**
+     * 重启服务
+     * @param action
+     */
+    restart() {
+        this.run('restart');
+        return this;
+    }
+    /**
+     * 查看服务状态
+     * @param action
+     */
+    status() {
+        this.run('status');
+        return this;
+    }
+    /**
+     * 刷新服务
+     * @param action
+     */
+    refresh() {
+        this.run('refresh');
+        return this;
+    }
+    /**
      * 运行服务命令
      * @param action
      */
@@ -404,7 +428,7 @@ class WinswWrapper extends events_1.default {
         WinCmd_1.default.isAdmin().then(isAdmin => {
             if (isAdmin) {
                 WinCmd_1.default.elevate_exec(cmd, {})
-                    .then(() => this.emit(action))
+                    .then((data) => this.emit(action, data))
                     .catch(err => {
                     this.emit('error', `${action} failed: ${err}`);
                 });

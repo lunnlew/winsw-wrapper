@@ -159,11 +159,24 @@ interface ServiceEvents {
      */
     'stop': () => void;
     /**
+     * 查看服务状态后触发
+     */
+    'status': (data) => void;
+    /**
+     * 重启服务后触发
+     */
+    'restart': () => void;
+    /**
+     * 刷新服务后触发
+     */
+    'refresh': () => void;
+    /**
      *服务出错后触发
      */
     'error': (err: Error | string) => void;
 }
 
+export type ServiceEventsAction = keyof ServiceEvents
 
 export default class WinswWrapper {
     constructor(options: WinswWrapperOptions): this;
@@ -198,6 +211,18 @@ export default class WinswWrapper {
      */
     uninstall(): WinswWrapper;
     /**
+     * 重启服务
+     */
+    restart(): WinswWrapper;
+    /**
+     * 查看服务状态
+     */
+    status(): WinswWrapper;
+    /**
+     * 刷新服务
+     */
+    refresh(): WinswWrapper;
+    /**
      * 设置winsw bin文件所在目录
      */
     setWrapperBinPath(binPath: string): WinswWrapper;
@@ -210,7 +235,7 @@ export default class WinswWrapper {
     /**
      * 服务失败后可以执行的动作
      */
-    afterFailure(action: 'restart' | 'reload', delay = '10 sec'): WinswWrapper;
+    afterFailure(action: ServiceEventsType, delay = '10 sec'): WinswWrapper;
     /**
     * 服务失败后再次重置状态的时间间隔
     * @param delay 

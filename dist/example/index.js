@@ -14,7 +14,7 @@ test
     .setServiceAccount({
     allowservicelogon: false
 })
-    .afterFailure('reload', '10 sec')
+    .afterFailure('restart', '10 sec')
     .resetFailure('1 hour')
     .arguments('--AsService')
     .startarguments('--start --AsService')

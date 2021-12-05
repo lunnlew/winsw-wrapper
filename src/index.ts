@@ -4,7 +4,7 @@ import path from 'path';
 import bin from './bin';
 import winCmd from './WinCmd';
 import EventEmitter from 'events';
-import { LogmodeType, PriorityType, ServiceAccount, StartmodeType, WinswWrapperOptions } from '@/types';
+import { LogmodeType, PriorityType, ServiceAccount, ServiceEventsAction, StartmodeType, WinswWrapperOptions } from '@/types';
 
 const defaultOptions = {
     id: 'hello world',
@@ -219,7 +219,7 @@ class WinswWrapper extends EventEmitter {
      * @param action 
      * @returns 
      */
-    afterFailure(action: 'restart' | 'reload', delay = '10 sec') {
+    afterFailure(action: ServiceEventsAction, delay = '10 sec') {
         this.options.onfailure = {
             action,
             delay
@@ -394,15 +394,39 @@ class WinswWrapper extends EventEmitter {
         return this;
     }
     /**
+     * 重启服务
+     * @param action 
+     */
+    restart() {
+        this.run('restart');
+        return this;
+    }
+    /**
+     * 查看服务状态
+     * @param action 
+     */
+    status() {
+        this.run('status');
+        return this;
+    }
+    /**
+     * 刷新服务
+     * @param action 
+     */
+    refresh() {
+        this.run('refresh');
+        return this;
+    }
+    /**
      * 运行服务命令
      * @param action 
      */
-    run(action: 'install' | 'uninstall' | 'start' | 'stop') {
+    run(action: ServiceEventsAction) {
         const cmd = `${this.getWrapperExePath()} ${action}`;
         winCmd.isAdmin().then(isAdmin => {
             if (isAdmin) {
                 winCmd.elevate_exec(cmd, {})
-                    .then(() => this.emit(action))
+                    .then((data) => this.emit(action, data))
                     .catch(err => {
                         this.emit('error', `${action} failed: ${err}`);
                     });
