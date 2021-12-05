@@ -1,7 +1,7 @@
 /**
  * 服务安装时使用的域账号信息
  */
-interface ServiceAccount {
+export interface ServiceAccount {
     /**
      * 账号域
      */
@@ -28,7 +28,7 @@ const Priority = [
     'AboveNormal'
 ] as const
 
-type PriorityType = typeof Priority[number]
+export type PriorityType = typeof Priority[number]
 
 const Startmode = [
     'Automatic',
@@ -37,7 +37,7 @@ const Startmode = [
     'System'
 ] as const
 
-type StartmodeType = typeof Startmode[number]
+export type StartmodeType = typeof Startmode[number]
 
 const Logmode = [
     'append',
@@ -48,9 +48,9 @@ const Logmode = [
     'rotate'
 ] as const
 
-type LogmodeType = typeof Logmode[number]
+export type LogmodeType = typeof Logmode[number]
 
-interface WinswWrapperOptions {
+export interface WinswWrapperOptions {
     // 必须的属性
     /**
      * 服务的ID
@@ -162,4 +162,143 @@ interface ServiceEvents {
      *服务出错后触发
      */
     'error': (err: Error | string) => void;
+}
+
+
+export default class WinswWrapper {
+    constructor(options: WinswWrapperOptions): this;
+    /**
+     * @param event keyof ServiceEvents
+     * @param listener 
+     */
+    on<U extends keyof ServiceEvents>(
+        event: U, listener: ServiceEvents[U]
+    ): this;
+    /**
+     * @param event keyof ServiceEvents
+     * @param args 
+     */
+    emit<U extends keyof ServiceEvents>(
+        event: U, ...args: Parameters<ServiceEvents[U]>
+    ): boolean;
+    /**
+     * 启动服务
+     */
+    start(): WinswWrapper;
+    /**
+     * 停止服务
+     */
+    stop(): WinswWrapper;
+    /**
+     * 安装服务
+     */
+    install(): WinswWrapper;
+    /**
+     * 卸载服务
+     */
+    uninstall(): WinswWrapper;
+    /**
+     * 设置winsw bin文件所在目录
+     */
+    setWrapperBinPath(binPath: string): WinswWrapper;
+
+    /**
+     * 设置服务安装时使用的用户域账号
+     */
+    setServiceAccount(serviceAccount: ServiceAccount): WinswWrapper;
+
+    /**
+     * 服务失败后可以执行的动作
+     */
+    afterFailure(action: 'restart' | 'reload', delay = '10 sec'): WinswWrapper;
+    /**
+    * 服务失败后再次重置状态的时间间隔
+    * @param delay 
+    * @returns 
+    */
+    resetFailure(delay = '1 hour'): WinswWrapper;
+    /**
+     * 执行的参数
+     */
+    arguments(arg = ''): WinswWrapper;
+    /**
+    * start时执行的参数，运行时会覆盖arguments指定的参数
+    */
+    startarguments(arg = ''): WinswWrapper;
+    /**
+     * 执行时的工作目录
+     * @param path 
+     * @returns 
+     */
+    workdir(path = ''): WinswWrapper;
+
+    /**
+    * 服务的优先级
+    * @param priority 
+    * @returns 
+    */
+    priority(priority: PriorityType): WinswWrapper;
+
+    /**
+     * 停止后的超时时间，之后将强制停止
+     * @param timeout 
+     * @returns 
+     */
+    stoptimeout(timeout = '15 sec'): WinswWrapper;
+
+    /**
+    * 是否首先停止父进程
+    * @param enable 
+    * @returns 
+    */
+    stopparenfirst(enable = true): WinswWrapper;
+
+    /**
+     * 用于停止服务时执行的可执行文件，仅在指定了停止参数时有效
+     * @param path 
+     * @returns 
+     */
+    stopexecutable(path = ''): WinswWrapper;
+    /**
+    * 用于停止服务时执行的可执行文件的参数
+    */
+    stoparguments(arg = ''): WinswWrapper;
+
+    /**
+    * 服务启动模式
+    * @param mode 
+    * @returns 
+    */
+    startmode(mode: StartmodeType = 'Automatic'): WinswWrapper;
+
+    /**
+   * 服务启动时的等待时间
+   * @param delay 
+   * @returns 
+   */
+    delayedAutoStart(delay = '1 sec'): WinswWrapper;
+
+    /**
+     * 设置服务的环境变量
+     * @param key 
+     * @param value 
+     * @returns 
+     */
+    env(key, value): WinswWrapper;
+    /**
+    * 运行依赖的服务名称
+    * @param service 
+    * @returns 
+    */
+    depend(service): WinswWrapper;
+
+    /**
+     * 设置服务日志的路径
+     */
+    logpath(path = ''): WinswWrapper;
+
+    /**
+    * 设置服务日志新增模式
+    */
+    logmode(mode: LogmodeType = 'append'): WinswWrapper;
 }

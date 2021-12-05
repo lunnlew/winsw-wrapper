@@ -4,29 +4,13 @@ import path from 'path';
 import bin from './bin';
 import winCmd from './WinCmd';
 import EventEmitter from 'events';
+import { LogmodeType, PriorityType, ServiceAccount, StartmodeType, WinswWrapperOptions } from '@/types';
 
 const defaultOptions = {
     id: 'hello world',
     name: 'Hello World Service',
     description: 'A simple service',
     executable: ''
-}
-
-declare interface WinswWrapper {
-    /**
-     * @param event keyof ServiceEvents
-     * @param listener 
-     */
-    on<U extends keyof ServiceEvents>(
-        event: U, listener: ServiceEvents[U]
-    ): this;
-    /**
-     * @param event keyof ServiceEvents
-     * @param args 
-     */
-    emit<U extends keyof ServiceEvents>(
-        event: U, ...args: Parameters<ServiceEvents[U]>
-    ): boolean;
 }
 /**
  * winsw服务包装器
@@ -90,18 +74,14 @@ class WinswWrapper extends EventEmitter {
             })
         }
         if (this.options.arguments && this.options.arguments.length > 0) {
-            for (let arg of this.options.arguments) {
-                _xml.push({
-                    arguments: arg
-                })
-            }
+            _xml.push({
+                arguments: this.options.arguments.join(' ')
+            })
         }
         if (this.options.startarguments && this.options.startarguments.length > 0) {
-            for (let arg of this.options.startarguments) {
-                _xml.push({
-                    startarguments: arg
-                })
-            }
+            _xml.push({
+                startarguments: this.options.startarguments.join(' ')
+            })
         }
         if (this.options.workdir) {
             _xml.push({
@@ -124,11 +104,9 @@ class WinswWrapper extends EventEmitter {
             })
         }
         if (this.options.stoparguments && this.options.stoparguments.length > 0) {
-            for (let arg of this.options.stoparguments) {
-                _xml.push({
-                    stoparguments: arg
-                })
-            }
+            _xml.push({
+                stoparguments: this.options.stoparguments.join(' ')
+            })
             if (this.options.stopexecutable) {
                 _xml.push({
                     stopexecutable: this.options.stopexecutable

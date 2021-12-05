@@ -76,18 +76,14 @@ class WinswWrapper extends events_1.default {
             });
         }
         if (this.options.arguments && this.options.arguments.length > 0) {
-            for (let arg of this.options.arguments) {
-                _xml.push({
-                    arguments: arg
-                });
-            }
+            _xml.push({
+                arguments: this.options.arguments.join(' ')
+            });
         }
         if (this.options.startarguments && this.options.startarguments.length > 0) {
-            for (let arg of this.options.startarguments) {
-                _xml.push({
-                    startarguments: arg
-                });
-            }
+            _xml.push({
+                startarguments: this.options.startarguments.join(' ')
+            });
         }
         if (this.options.workdir) {
             _xml.push({
@@ -110,11 +106,9 @@ class WinswWrapper extends events_1.default {
             });
         }
         if (this.options.stoparguments && this.options.stoparguments.length > 0) {
-            for (let arg of this.options.stoparguments) {
-                _xml.push({
-                    stoparguments: arg
-                });
-            }
+            _xml.push({
+                stoparguments: this.options.stoparguments.join(' ')
+            });
             if (this.options.stopexecutable) {
                 _xml.push({
                     stopexecutable: this.options.stopexecutable

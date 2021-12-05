@@ -1,8 +1,14 @@
 {
   "name": "winsw-wrapper",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "bin"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "tsc && node dist/index.js",
