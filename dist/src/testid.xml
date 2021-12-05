@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+	<id>test id</id>
+	<name>test name</name>
+	<description>test description</description>
+	<executable>electron.exe</executable>
+	<serviceaccount>
+		<domain></domain>
+		<user></user>
+		<password></password>
+		<allowservicelogon>false</allowservicelogon>
+	</serviceaccount>
+	<onfailure action="reload" delay="10 sec"/>
+	<resetfailure>1 hour</resetfailure>
+	<arguments>--AsService</arguments>
+	<startarguments>--start --AsService</startarguments>
+	<workingdirectory>G:\workspace\winsw-wrapper\dist\</workingdirectory>
+	<priority>High</priority>
+	<stoptimeout>15 sec</stoptimeout>
+	<stopparentprocessfirst>true</stopparentprocessfirst>
+	<stoparguments>--stop</stoparguments>
+	<stopexecutable>electron.exe</stopexecutable>
+	<startmode>Automatic</startmode>
+	<delayedautostart>10 sec</delayedautostart>
+	<env name="test" value="test"/>
+	<env name="test1" value="test1;test2"/>
+	<depend>Eventlog</depend>
+	<depend>W32Time</depend>
+	<logpath>G:\workspace\winsw-wrapper\dist\log</logpath>
+	<log mode="append"/>
+</service>

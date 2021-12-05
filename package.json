@@ -1,0 +1,23 @@
+{
+  "name": "winsw-wrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js",
+    "example": "tsc && node dist/example/index.js",
+    "dev": "nodemon --watch src --ext js,ts,tsx,mjs,json --exec yarn start",
+    "test": "nodemon --watch example --ext js,ts,tsx,mjs,json --exec yarn example"
+  },
+  "author": "lunnlew",
+  "license": "MIT",
+  "dependencies": {
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2",
+    "xml": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.11"
+  }
+}
