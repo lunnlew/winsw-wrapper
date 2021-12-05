@@ -366,7 +366,7 @@ class WinswWrapper extends events_1.default {
     install() {
         const xml = this.generateXml();
         fs_1.default.writeFileSync(path_1.default.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
-        console.log(xml);
+        // console.log(xml);
         this.createWrapperExe();
         this.run('install');
         return this;
