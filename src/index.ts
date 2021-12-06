@@ -362,10 +362,6 @@ class WinswWrapper extends EventEmitter {
      * @returns 
      */
     install() {
-        const xml = this.generateXml();
-        fs.writeFileSync(path.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
-        // console.log(xml);
-        this.createWrapperExe();
         this.run('install');
         return this;
     }
@@ -496,6 +492,17 @@ class WinswWrapper extends EventEmitter {
      */
     run(action: ServiceEventsAction) {
         const cmd = `${this.getWrapperExePath()} ${action}`;
+
+        let xml_path = path.join(__dirname, this.getWrapperExeName() + '.xml')
+        let wrapper_path = path.join(__dirname, this.getWrapperExeName() + '.exe')
+        // 还没有包装器文件及配置
+        if (!fs.existsSync(xml_path) || fs.existsSync(wrapper_path)) {
+            const xml = this.generateXml();
+            fs.writeFileSync(path.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
+            // console.log(xml);
+            this.createWrapperExe();
+        }
+
         winCmd.elevate_exec(cmd, {})
             .then((data) => this.buildExeResult(action, data))
             .catch(err => {
