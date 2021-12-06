@@ -501,11 +501,11 @@ class WinswWrapper extends events_1.default {
         const cmd = `${this.getWrapperExePath()} ${action}`;
         let xml_path = path_1.default.join(__dirname, this.getWrapperExeName() + '.xml');
         let wrapper_path = path_1.default.join(__dirname, this.getWrapperExeName() + '.exe');
-        // 还没有包装器文件及配置
-        if (!fs_1.default.existsSync(xml_path) || !fs_1.default.existsSync(wrapper_path)) {
-            const xml = this.generateXml();
-            fs_1.default.writeFileSync(path_1.default.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
-            // console.log(xml);
+        // 始终进行xml配置生成
+        const xml = this.generateXml();
+        fs_1.default.writeFileSync(xml_path, xml);
+        // 不存在WrapperExe时重新生成
+        if (!fs_1.default.existsSync(wrapper_path)) {
             this.createWrapperExe();
         }
         WinCmd_1.default.elevate_exec(cmd, {})
