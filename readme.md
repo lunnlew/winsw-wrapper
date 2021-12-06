@@ -18,7 +18,7 @@ test
   })
   .afterFailure("reload", "10 sec")
   .resetFailure("1 hour")
-//   .arguments(__dirname)
+  //   .arguments(__dirname)
   .arguments(path.join(__dirname, "../index.js"))
   .arguments("--start")
   .arguments("--AsService")
@@ -41,8 +41,16 @@ test
   .on("error", (err) => {
     console.log(err);
   })
-  .on("install", () => {
-    console.log("install success");
+  .on("install", (result) => {
+    console.log(result);
+    if (result.state === "success") {
+      test.uninstall();
+    } else if (result.state === "error" && result.data == "Existent") {
+      test.uninstall();
+    }
+  })
+  .on("uninstall", (result) => {
+    console.log(result);
   })
   .install();
 ```
