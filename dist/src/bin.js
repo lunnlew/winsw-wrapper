@@ -41,4 +41,3 @@ class bin {
     }
 }
 exports.default = new bin();
-//# sourceMappingURL=bin.js.map

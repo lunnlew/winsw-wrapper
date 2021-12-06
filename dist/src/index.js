@@ -516,4 +516,3 @@ class WinswWrapper extends events_1.default {
     }
 }
 exports.default = WinswWrapper;
-//# sourceMappingURL=index.js.map

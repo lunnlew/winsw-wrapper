@@ -48,4 +48,3 @@ test
     console.log(result);
 })
     .install();
-//# sourceMappingURL=index.js.map

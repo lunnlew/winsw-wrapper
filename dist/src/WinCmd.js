@@ -49,4 +49,3 @@ class WinCmd {
     }
 }
 exports.default = new WinCmd();
-//# sourceMappingURL=WinCmd.js.map
