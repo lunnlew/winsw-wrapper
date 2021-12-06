@@ -189,6 +189,13 @@ export default class WinswWrapper {
     ): this;
     /**
      * @param event keyof ServiceEvents
+     * @param listener 
+     */
+    once<U extends keyof ServiceEvents>(
+        event: U, listener: ServiceEvents[U]
+    ): this;
+    /**
+     * @param event keyof ServiceEvents
      * @param args 
      */
     emit<U extends keyof ServiceEvents>(

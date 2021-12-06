@@ -502,7 +502,7 @@ class WinswWrapper extends events_1.default {
         let xml_path = path_1.default.join(__dirname, this.getWrapperExeName() + '.xml');
         let wrapper_path = path_1.default.join(__dirname, this.getWrapperExeName() + '.exe');
         // 还没有包装器文件及配置
-        if (!fs_1.default.existsSync(xml_path) || fs_1.default.existsSync(wrapper_path)) {
+        if (!fs_1.default.existsSync(xml_path) || !fs_1.default.existsSync(wrapper_path)) {
             const xml = this.generateXml();
             fs_1.default.writeFileSync(path_1.default.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
             // console.log(xml);
