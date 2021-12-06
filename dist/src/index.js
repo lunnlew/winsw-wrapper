@@ -443,7 +443,8 @@ class WinswWrapper extends events_1.default {
                     }
                     else {
                         this.emit(action, {
-                            state: 'success'
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
@@ -456,7 +457,8 @@ class WinswWrapper extends events_1.default {
                     }
                     else {
                         this.emit(action, {
-                            state: 'success'
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
@@ -477,6 +479,12 @@ class WinswWrapper extends events_1.default {
                         this.emit(action, {
                             state: 'success',
                             data: 'Started'
+                        });
+                    }
+                    else {
+                        this.emit(action, {
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
