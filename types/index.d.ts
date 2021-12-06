@@ -138,6 +138,9 @@ export interface WinswWrapperOptions {
      * 服务日志文件路径
      */
     logpath?: string
+    /**
+     * 服务日志模式
+     */
     logmode?: LogmodeType
 }
 
