@@ -54,3 +54,11 @@ test
   })
   .install();
 ```
+
+# Related
+
+[winsw](https://github.com/winsw/winsw)
+
+# License
+
+winsw-wrapper is licensed under the MIT license.
