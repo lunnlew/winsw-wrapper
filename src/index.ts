@@ -395,7 +395,7 @@ class WinswWrapper extends EventEmitter {
     }
     /**
      * 重启服务
-     * @param action 
+     * @returns 
      */
     restart() {
         this.run('restart');
@@ -403,19 +403,85 @@ class WinswWrapper extends EventEmitter {
     }
     /**
      * 查看服务状态
-     * @param action 
+     * @returns 
      */
     status() {
         this.run('status');
         return this;
     }
     /**
-     * 刷新服务
+     * 测试服务在停止状态时能否启动
+     * @returns 
+     */
+    test() {
+        this.run('test');
+        return this;
+    }
+    /**
+     * 处理返回的结果
      * @param action 
      */
-    refresh() {
-        this.run('refresh');
-        return this;
+    buildExeResult(action: ServiceEventsAction, data: any) {
+        const { stdout, stderr, error } = data;
+        if (stderr.length > 0) {
+            this.emit(action, {
+                state: 'error',
+                error: stderr.toString()
+            });
+            this.emit('error', stderr.toString())
+        } else {
+            switch (action) {
+                case 'install':
+                    if (stdout.toString().indexOf('already exists') > -1) {
+                        this.emit(action, {
+                            state: 'error',
+                            data: 'NonExistent'
+                        });
+                    } else {
+                        this.emit(action, {
+                            state: 'success'
+                        });
+                    }
+                    break;
+                case 'uninstall':
+                    if (stdout.toString().indexOf('does not exist') > -1) {
+                        this.emit(action, {
+                            state: 'error',
+                            data: 'NonExistent'
+                        });
+                    } else {
+                        this.emit(action, {
+                            state: 'success'
+                        });
+                    }
+                    break;
+                case 'status':
+                    if (stdout.toString().indexOf('NonExistent') > -1) {
+                        this.emit(action, {
+                            state: 'error',
+                            data: 'NonExistent'
+                        });
+                    } else if (stdout.toString().indexOf('Stopped') > -1) {
+                        this.emit(action, {
+                            state: 'success',
+                            data: 'Stopped'
+                        });
+                    } else if (stdout.toString().indexOf('Started') > -1) {
+                        this.emit(action, {
+                            state: 'success',
+                            data: 'Started'
+                        });
+                    }
+                    break;
+                default:
+                    this.emit(action, {
+                        state: 'success',
+                        data: stdout.toString()
+                    });
+                    break;
+
+            }
+        }
     }
     /**
      * 运行服务命令
@@ -423,19 +489,11 @@ class WinswWrapper extends EventEmitter {
      */
     run(action: ServiceEventsAction) {
         const cmd = `${this.getWrapperExePath()} ${action}`;
-        winCmd.isAdmin().then(isAdmin => {
-            if (isAdmin) {
-                winCmd.elevate_exec(cmd, {})
-                    .then((data) => this.emit(action, data))
-                    .catch(err => {
-                        this.emit('error', `${action} failed: ${err}`);
-                    });
-            } else {
-                throw new Error('not admin');
-            }
-        }).catch(err => {
-            this.emit('error', `${action} failed: ${err}`);
-        })
+        winCmd.elevate_exec(cmd, {})
+            .then((data) => this.buildExeResult(action, data))
+            .catch(err => {
+                this.emit('error', `${action} failed: ${err}`);
+            });
     }
 }
 

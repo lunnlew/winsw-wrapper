@@ -145,31 +145,31 @@ interface ServiceEvents {
     /**
      * 服务安装后触发
      */
-    'install': () => void;
+    'install': (data?: any) => void;
     /**
      * 服务卸载后触发
      */
-    'uninstall': () => void;
+    'uninstall': (data?: any) => void;
     /**
      * 服务启动后触发
      */
-    'start': () => void;
+    'start': (data?: any) => void;
     /**
      * 服务停止后触发
      */
-    'stop': () => void;
+    'stop': (data?: any) => void;
     /**
      * 查看服务状态后触发
      */
-    'status': (data) => void;
+    'status': (data?: any) => void;
     /**
      * 重启服务后触发
      */
-    'restart': () => void;
+    'restart': (data?: any) => void;
     /**
-     * 刷新服务后触发
+     * 测试服务在停止状态时能否启动
      */
-    'refresh': () => void;
+    'test': (data?: any) => void;
     /**
      *服务出错后触发
      */
@@ -219,9 +219,9 @@ export default class WinswWrapper {
      */
     status(): WinswWrapper;
     /**
-     * 刷新服务
+     * 测试服务在停止状态时能否启动
      */
-    refresh(): WinswWrapper;
+    test(): WinswWrapper;
     /**
      * 设置winsw bin文件所在目录
      */

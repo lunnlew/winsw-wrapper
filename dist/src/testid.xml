@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <service>
-	<id>test id</id>
+	<id>SSDPSRV</id>
 	<name>test name</name>
 	<description>test description</description>
 	<executable>electron.exe</executable>
@@ -10,7 +10,7 @@
 		<password></password>
 		<allowservicelogon>false</allowservicelogon>
 	</serviceaccount>
-	<onfailure action="reload" delay="10 sec"/>
+	<onfailure action="restart" delay="10 sec"/>
 	<resetfailure>1 hour</resetfailure>
 	<arguments>--AsService</arguments>
 	<startarguments>--start --AsService</startarguments>

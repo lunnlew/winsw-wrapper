@@ -35,8 +35,8 @@ test
     .on('error', err => {
     console.log(err);
 })
-    .on('uninstall', () => {
-    console.log('uninstall success');
+    .on('start', (data) => {
+    console.log(data);
 })
-    .uninstall();
+    .start();
 //# sourceMappingURL=index.js.map

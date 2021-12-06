@@ -21,7 +21,7 @@ class bin {
      * @returns 
      */
     getElevate() {
-        return this.getWrapperBinPath() + "/elevate/elevate.cmd";
+        return this.getWrapperBinPath() + "/elevate/elevate.ps1";
     }
     /**
      * 获取winsw.exe的路径
@@ -29,6 +29,13 @@ class bin {
      */
     getWinsw() {
         return this.getWrapperBinPath() + "/winsw/winsw.exe";
+    }
+    /**
+     * 获取powershell.exe的路径
+     * @returns 
+     */
+    getPowershell() {
+        return "powershell.exe";
     }
 }
 export default new bin();
