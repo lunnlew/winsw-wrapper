@@ -33,7 +33,7 @@ If ((New-Object Security.Principal.WindowsPrincipal $Current).IsInRole([Security
         $process.WaitForExit()
         $content = Get-Content $temp_file
         Write-Output $content
-        Remove-Item -Force -ErrorAction SilentlyContinue $output
+        Remove-Item -Force -ErrorAction SilentlyContinue $temp_file
         exit 0
     }
     catch [System.ComponentModel.Win32Exception] {
