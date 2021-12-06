@@ -1,3 +1,9 @@
+# Installation
+```bash
+npm i winsw-wrapper
+# or 
+yarn add winsw-wrapper
+```
 # Useage
 
 ```typescript
