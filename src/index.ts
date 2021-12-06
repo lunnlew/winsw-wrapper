@@ -435,7 +435,7 @@ class WinswWrapper extends EventEmitter {
                     if (stdout.toString().indexOf('already exists') > -1) {
                         this.emit(action, {
                             state: 'error',
-                            data: 'NonExistent'
+                            data: 'Existent'
                         });
                     } else {
                         this.emit(action, {

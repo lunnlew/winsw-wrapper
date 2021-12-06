@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <service>
-	<id>SSDPSRV</id>
+	<id>test id</id>
 	<name>test name</name>
 	<description>test description</description>
 	<executable>electron.exe</executable>

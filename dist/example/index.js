@@ -35,8 +35,17 @@ test
     .on('error', err => {
     console.log(err);
 })
-    .on('start', (data) => {
-    console.log(data);
+    .on('install', (result) => {
+    console.log(result);
+    if (result.state === 'success') {
+        test.uninstall();
+    }
+    else if (result.state === 'error' && result.data == 'Existent') {
+        test.uninstall();
+    }
 })
-    .start();
+    .on('uninstall', (result) => {
+    console.log(result);
+})
+    .install();
 //# sourceMappingURL=index.js.map
