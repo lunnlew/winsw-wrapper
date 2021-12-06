@@ -496,7 +496,7 @@ class WinswWrapper extends EventEmitter {
         let xml_path = path.join(__dirname, this.getWrapperExeName() + '.xml')
         let wrapper_path = path.join(__dirname, this.getWrapperExeName() + '.exe')
         // 还没有包装器文件及配置
-        if (!fs.existsSync(xml_path) || fs.existsSync(wrapper_path)) {
+        if (!fs.existsSync(xml_path) || !fs.existsSync(wrapper_path)) {
             const xml = this.generateXml();
             fs.writeFileSync(path.join(__dirname, this.getWrapperExeName() + '.xml'), xml);
             // console.log(xml);
