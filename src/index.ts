@@ -439,7 +439,8 @@ class WinswWrapper extends EventEmitter {
                         });
                     } else {
                         this.emit(action, {
-                            state: 'success'
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
@@ -451,7 +452,8 @@ class WinswWrapper extends EventEmitter {
                         });
                     } else {
                         this.emit(action, {
-                            state: 'success'
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
@@ -470,6 +472,11 @@ class WinswWrapper extends EventEmitter {
                         this.emit(action, {
                             state: 'success',
                             data: 'Started'
+                        });
+                    } else {
+                        this.emit(action, {
+                            state: 'success',
+                            data: stdout.toString()
                         });
                     }
                     break;
