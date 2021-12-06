@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 /**
  * 服务安装时使用的域账号信息
  */
@@ -177,8 +178,7 @@ interface ServiceEvents {
 }
 
 export type ServiceEventsAction = keyof ServiceEvents
-
-export default class WinswWrapper {
+export default class WinswWrapper extends EventEmitter {
     constructor(options: WinswWrapperOptions): this;
     /**
      * @param event keyof ServiceEvents
