@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node dist/src/index.js",
     "example": "tsc && node dist/example/index.js",
     "dev": "nodemon --watch src --ext js,ts,tsx,mjs,json --exec yarn start",
     "test": "nodemon --watch example --ext js,ts,tsx,mjs,json --exec yarn example"
