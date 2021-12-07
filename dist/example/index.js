@@ -31,7 +31,11 @@ test
     .depend('Eventlog')
     .depend('W32Time')
     .logpath(path_1.default.join(__dirname, '../log'))
-    .logmode('append')
+    // .logmode('append')
+    .logmode('roll-by-size', {
+    sizeThreshold: 10240,
+    keepFiles: 8
+})
     .on('error', err => {
     console.log(err);
 })

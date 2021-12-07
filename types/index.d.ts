@@ -41,11 +41,13 @@ const Startmode = [
 export type StartmodeType = typeof Startmode[number]
 
 const Logmode = [
-    'append',
     'none',
+    'append',
     'reset',
     'roll',
+    'roll-by-size',
     'roll-by-time',
+    'roll-by-size-time',
     'rotate'
 ] as const
 
@@ -142,6 +144,10 @@ export interface WinswWrapperOptions {
      * 服务日志模式
      */
     logmode?: LogmodeType
+    /**
+     * 日志模式的配置参数
+     */
+    logmodeOptions?: Object
 }
 
 
