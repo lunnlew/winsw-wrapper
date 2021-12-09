@@ -125,9 +125,9 @@ export interface WinswWrapperOptions {
      */
     startmode?: StartmodeType;
     /**
-     * 服务启动时的等待时间
+     * 自动启动模式时延迟启动
      */
-    delayedautostart?: string = '1 sec';
+    delayedautostart?: boolean = false;
     /**
      * 服务环境变量
      */
@@ -280,7 +280,7 @@ export default class WinswWrapper extends EventEmitter {
    * @param delay 
    * @returns 
    */
-    delayedAutoStart(delay = '1 sec'): WinswWrapper;
+    delayedAutoStart(enable: boolean = false): WinswWrapper;
 
     /**
      * 设置服务的环境变量

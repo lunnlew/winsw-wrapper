@@ -28,7 +28,7 @@ class bin {
      * @returns 
      */
     getWinsw() {
-        return this.getWrapperBinPath() + "/winsw/winsw.exe";
+        return this.getWrapperBinPath() + "/winsw/WinSW.NET2.exe";
     }
     /**
      * 获取powershell.exe的路径

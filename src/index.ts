@@ -14,9 +14,9 @@ import {
 } from "@/types";
 
 const defaultOptions = {
-  id: "hello world",
-  name: "Hello World Service",
-  description: "A simple service",
+  id: "hello",
+  name: "hello",
+  description: "hello",
   executable: "",
 };
 /**
@@ -45,16 +45,18 @@ class WinswWrapper extends EventEmitter {
       },
       {
         name: this.options.name,
-      },
-      {
-        description: this.options.description,
-      },
+      }
     ] as any;
     if (!this.options.executable) {
       throw new Error("executable is required");
     } else {
       _xml.push({
         executable: this.options.executable,
+      });
+    }
+    if (this.options.description) {
+      _xml.push({
+        description: this.options.description,
       });
     }
     if (this.options.serviceaccount) {
@@ -217,8 +219,8 @@ class WinswWrapper extends EventEmitter {
       throw new Error("winsw.exe not exists: " + winsw_path);
     }
     const exe_path = this.getWrapperExePath();
-    const source_files = [winsw_path, winsw_path + ".config"];
-    const dest_files = [exe_path, exe_path + ".config"];
+    const source_files = [winsw_path];
+    const dest_files = [exe_path];
     for (let i = 0; i < source_files.length; i++) {
       const source_file = source_files[i];
       const dest_file = dest_files[i];
@@ -347,8 +349,8 @@ class WinswWrapper extends EventEmitter {
    * @param delay
    * @returns
    */
-  delayedAutoStart(delay = "1 sec") {
-    this.options.delayedautostart = delay;
+  delayedAutoStart(enable: boolean = false) {
+    this.options.delayedautostart = enable;
     return this;
   }
   /**

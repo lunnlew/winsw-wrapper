@@ -23,7 +23,7 @@ test
     .stopexecutable('electron.exe')
     .stoparguments('--stop')
     .startmode('Automatic')
-    .delayedAutoStart('10 sec')
+    .delayedAutoStart(false)
     .env('test', 'test')
     .env('test1', 'test1;test2')
     .depend('Eventlog')
