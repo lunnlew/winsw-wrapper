@@ -348,5 +348,5 @@ export default class WinswWrapper extends EventEmitter {
     /**
     * 设置服务日志新增模式
     */
-    logmode(mode: LogmodeType = 'append'): WinswWrapper;
+    logmode(mode: LogmodeType = 'append', options?: any): WinswWrapper;
 }
