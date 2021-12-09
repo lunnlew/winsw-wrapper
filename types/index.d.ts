@@ -149,73 +149,29 @@ export interface WinswWrapperOptions {
      */
     logmodeOptions?: Object
 }
-
-
-interface ServiceEvents {
-    /**
-     * 服务安装后触发
-     */
-    'install': (data?: any) => void;
-    /**
-     * 服务卸载后触发
-     */
-    'uninstall': (data?: any) => void;
-    /**
-     * 服务启动后触发
-     */
-    'start': (data?: any) => void;
-    /**
-     * 服务停止后触发
-     */
-    'stop': (data?: any) => void;
-    /**
-     * 查看服务状态后触发
-     */
-    'status': (data?: any) => void;
-    /**
-     * 重启服务后触发
-     */
-    'restart': (data?: any) => void;
-    /**
-     * 测试服务在停止状态时能否启动
-     */
-    'test': (data?: any) => void;
-    /**
-     *服务出错后触发
-     */
-    'error': (err: Error | string) => void;
-}
-
-export type ServiceEventsAction = keyof ServiceEvents
 export default class WinswWrapper extends EventEmitter {
     constructor(options: WinswWrapperOptions): this;
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
-    on<U extends keyof ServiceEvents>(
-        event: U, listener: ServiceEvents[U]
-    ): this;
+    on<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
-    once<U extends keyof ServiceEvents>(
-        event: U, listener: ServiceEvents[U]
-    ): this;
+    once<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
-    off<U extends keyof ServiceEvents>(
-        event: U, listener: ServiceEvents[U]
-    ): this;
+    off<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
     /**
      * @param event keyof ServiceEvents
      * @param args 
      */
-    emit<U extends keyof ServiceEvents>(
-        event: U, ...args: Parameters<ServiceEvents[U]>
+    emit<T extends WinswEventType>(
+        event: T, ...args: Parameters<(data: Payload<T>) => void>
     ): boolean;
     /**
      * 启动服务
@@ -258,7 +214,7 @@ export default class WinswWrapper extends EventEmitter {
     /**
      * 服务失败后可以执行的动作
      */
-    afterFailure(action: ServiceEventsType, delay = '10 sec'): WinswWrapper;
+    afterFailure(action: 'restart' | 'reboot', delay = '10 sec'): WinswWrapper;
     /**
     * 服务失败后再次重置状态的时间间隔
     * @param delay 
@@ -350,3 +306,31 @@ export default class WinswWrapper extends EventEmitter {
     */
     logmode(mode: LogmodeType = 'append', options?: any): WinswWrapper;
 }
+type WinswEventStateType = 'error' | 'success'
+
+type WinswEventPayload = {
+    /**
+     * 事件结果状态
+     */
+    state: WinswEventStateType,
+    /**
+     * 关联事件名称，仅在state为error时有效
+     */
+    event?: WinswEventType,
+    /**
+     * 事件结果数据
+     */
+    data?: any
+}
+interface WinswEventMap {
+    install: WinswEventPayload;
+    uninstall: WinswEventPayload;
+    start: WinswEventPayload;
+    stop: WinswEventPayload;
+    restart: WinswEventPayload;
+    status: WinswEventPayload;
+    test: WinswEventPayload;
+    error: WinswEventPayload
+}
+export type WinswEventType = keyof WinswEventMap;
+type Payload<T extends WinswEventType> = WinswEventMap[T];

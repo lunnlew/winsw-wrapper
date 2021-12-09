@@ -8,8 +8,8 @@ import {
   LogmodeType,
   PriorityType,
   ServiceAccount,
-  ServiceEventsAction,
   StartmodeType,
+  WinswEventType,
   WinswWrapperOptions,
 } from "@/types";
 
@@ -248,7 +248,7 @@ class WinswWrapper extends EventEmitter {
    * @param action
    * @returns
    */
-  afterFailure(action: ServiceEventsAction, delay = "10 sec") {
+  afterFailure(action: 'restart' | 'reboot', delay = "10 sec") {
     this.options.onfailure = {
       action,
       delay,
@@ -449,14 +449,18 @@ class WinswWrapper extends EventEmitter {
    * 处理返回的结果
    * @param action
    */
-  buildExeResult(action: ServiceEventsAction, data: any) {
+  buildExeResult(action: WinswEventType, data: any) {
     const { stdout, stderr, error } = data;
     if (stderr.length > 0) {
       this.emit(action, {
         state: "error",
-        error: stderr.toString(),
+        data: stderr.toString(),
       });
-      this.emit("error", stderr.toString());
+      this.emit("error", {
+        state: "error",
+        event: action,
+        data: stderr.toString(),
+      });
     } else {
       switch (action) {
         case "install":
@@ -521,7 +525,7 @@ class WinswWrapper extends EventEmitter {
    * 运行服务命令
    * @param action
    */
-  run(action: ServiceEventsAction) {
+  run(action: WinswEventType) {
     const cmd = `${this.getWrapperExePath()} ${action}`;
 
     let xml_path = path.join(__dirname, this.getWrapperExeName() + ".xml");

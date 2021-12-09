@@ -443,9 +443,13 @@ class WinswWrapper extends events_1.default {
         if (stderr.length > 0) {
             this.emit(action, {
                 state: "error",
-                error: stderr.toString(),
+                data: stderr.toString(),
             });
-            this.emit("error", stderr.toString());
+            this.emit("error", {
+                state: "error",
+                event: action,
+                data: stderr.toString(),
+            });
         }
         else {
             switch (action) {
@@ -527,10 +531,11 @@ class WinswWrapper extends events_1.default {
         if (!fs_1.default.existsSync(wrapper_path)) {
             this.createWrapperExe();
         }
-        WinCmd_1.default.elevate_exec(cmd, {})
+        WinCmd_1.default
+            .elevate_exec(cmd, {})
             .then((data) => this.buildExeResult(action, data))
-            .catch(err => {
-            this.emit('error', `${action} failed: ${err}`);
+            .catch((err) => {
+            this.emit("error", `${action} failed: ${err}`);
         });
     }
 }
