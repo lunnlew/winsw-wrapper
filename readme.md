@@ -6,11 +6,7 @@ npm i winsw-wrapper
 yarn add winsw-wrapper
 ```
 
-# used winsw version
-
-WinSW.NET2.exe v2.11.0
-
-# Useage
+# Example
 
 ```typescript
 import path from "path";
@@ -73,7 +69,7 @@ test
 
 # Related
 
-[winsw](https://github.com/winsw/winsw)
+[winsw](https://github.com/winsw/winsw) [Used winsw-v2.11.0](https://github.com/winsw/winsw/releases/tag/v2.11.0)
 
 # License
 
