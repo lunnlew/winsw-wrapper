@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const xml_1 = (0, tslib_1.__importDefault)(require("xml"));
 const fs_1 = (0, tslib_1.__importDefault)(require("fs"));
-const path_1 = (0, tslib_1.__importDefault)(require("path"));
 const bin_1 = (0, tslib_1.__importDefault)(require("./bin"));
 const WinCmd_1 = (0, tslib_1.__importDefault)(require("./WinCmd"));
 const events_1 = (0, tslib_1.__importDefault)(require("events"));
@@ -17,9 +16,20 @@ const defaultOptions = {
  * winsw服务包装器
  */
 class WinswWrapper extends events_1.default {
+    /**
+     * WinswWrapperOptions
+     */
     options;
+    /**
+     * 生成的wrapper保存位置
+     */
+    wrapperSaveDir;
+    /**
+     * @param options
+     */
     constructor(options = defaultOptions) {
         super();
+        this.wrapperSaveDir = __dirname;
         this.options = Object.assign({}, defaultOptions, options);
     }
     /**
@@ -182,7 +192,7 @@ class WinswWrapper extends events_1.default {
      * 取得Wrapper放置目录
      */
     getWrapperExeDir() {
-        return __dirname + "/";
+        return this.wrapperSaveDir;
     }
     /**
      * 取得Wrapper名称
@@ -192,28 +202,51 @@ class WinswWrapper extends events_1.default {
         return id.replace(/[^\w]/gi, "").toLowerCase();
     }
     /**
+     * 设置Wrapper放置目录
+     * @param path
+     */
+    setWrapperSaveDir(dirPath) {
+        this.wrapperSaveDir = dirPath.replace(/[\\|/]$/, '') + "/";
+        return this;
+    }
+    /**
      * 取得Wrapper文件路径
      */
     getWrapperExePath() {
-        return (this.getWrapperExeDir() +
+        return this.getWrapperExeDir() +
             this.getWrapperExeName() +
-            ".exe").replace(/\\/g, "/");
+            ".exe";
+    }
+    /**
+     * 取得Wrapper xml文件路径
+     */
+    getWrapperExeXmlPath() {
+        return this.getWrapperExeDir() +
+            this.getWrapperExeName() +
+            ".xml";
     }
     /**
      * 创建Wrapper文件
      */
     createWrapperExe() {
-        const winsw_path = bin_1.default.getWinsw();
-        if (!fs_1.default.existsSync(winsw_path)) {
-            throw new Error("winsw.exe not exists: " + winsw_path);
-        }
-        const exe_path = this.getWrapperExePath();
-        const source_files = [winsw_path];
-        const dest_files = [exe_path];
-        for (let i = 0; i < source_files.length; i++) {
-            const source_file = source_files[i];
-            const dest_file = dest_files[i];
-            fs_1.default.copyFileSync(source_file, dest_file);
+        const xml_path = this.getWrapperExeXmlPath();
+        const wrapper_path = this.getWrapperExePath();
+        // 始终进行xml配置生成
+        const xml = this.generateXml("service", this.buildXmlOptions());
+        fs_1.default.writeFileSync(xml_path, xml);
+        // 不存在WrapperExe时重新生成
+        if (!fs_1.default.existsSync(wrapper_path)) {
+            const winsw_path = bin_1.default.getWinsw();
+            if (!fs_1.default.existsSync(winsw_path)) {
+                throw new Error("winsw.exe not exists: " + winsw_path);
+            }
+            const source_files = [winsw_path];
+            const dest_files = [wrapper_path];
+            for (let i = 0; i < source_files.length; i++) {
+                const source_file = source_files[i];
+                const dest_file = dest_files[i];
+                fs_1.default.copyFileSync(source_file, dest_file);
+            }
         }
     }
     /**
@@ -524,15 +557,7 @@ class WinswWrapper extends events_1.default {
      */
     run(action) {
         const cmd = `${this.getWrapperExePath()} ${action}`;
-        let xml_path = path_1.default.join(__dirname, this.getWrapperExeName() + ".xml");
-        let wrapper_path = path_1.default.join(__dirname, this.getWrapperExeName() + ".exe");
-        // 始终进行xml配置生成
-        const xml = this.generateXml("service", this.buildXmlOptions());
-        fs_1.default.writeFileSync(xml_path, xml);
-        // 不存在WrapperExe时重新生成
-        if (!fs_1.default.existsSync(wrapper_path)) {
-            this.createWrapperExe();
-        }
+        this.createWrapperExe();
         WinCmd_1.default
             .elevate_exec(cmd, {})
             .then((data) => this.buildExeResult(action, data))

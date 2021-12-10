@@ -150,22 +150,39 @@ export interface WinswWrapperOptions {
     logmodeOptions?: Object
 }
 export default class WinswWrapper extends EventEmitter {
+    /**
+     * WinswWrapperOptions
+     */
+    options: WinswWrapperOptions;
+
+    /**
+     * 生成的wrapper保存位置
+     */
+    wrapperSaveDir: string;
+
+    /**
+     * @param options 
+     */
     constructor(options: WinswWrapperOptions): this;
+
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
     on<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
+
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
     once<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
+
     /**
      * @param event keyof ServiceEvents
      * @param listener 
      */
     off<T extends WinswEventType>(event: T, listener: (data: Payload<T>) => void): this;
+
     /**
      * @param event keyof ServiceEvents
      * @param args 
@@ -173,62 +190,86 @@ export default class WinswWrapper extends EventEmitter {
     emit<T extends WinswEventType>(
         event: T, ...args: Parameters<(data: Payload<T>) => void>
     ): boolean;
+
     /**
      * 启动服务
      */
     start(): WinswWrapper;
+
     /**
      * 停止服务
      */
     stop(): WinswWrapper;
+
     /**
      * 安装服务
      */
     install(): WinswWrapper;
+
     /**
      * 卸载服务
      */
     uninstall(): WinswWrapper;
+
     /**
      * 重启服务
      */
     restart(): WinswWrapper;
+
     /**
      * 查看服务状态
      */
     status(): WinswWrapper;
+
     /**
      * 测试服务在停止状态时能否启动
      */
     test(): WinswWrapper;
+
     /**
-     * 设置winsw bin文件所在目录
+     * 设置配置生成时的Wrapper放置目录
+     * @param dirPath 
+     */
+    setWrapperSaveDir(dirPath: string): WinswWrapper;
+
+    /**
+     * 设置使用的winsw bin文件所在目录
+     * @param binPath 
      */
     setWrapperBinPath(binPath: string): WinswWrapper;
 
     /**
      * 设置服务安装时使用的用户域账号
+     * @param serviceAccount
      */
     setServiceAccount(serviceAccount: ServiceAccount): WinswWrapper;
 
     /**
      * 服务失败后可以执行的动作
+     * @param action
+     * @param delay
      */
     afterFailure(action: 'restart' | 'reboot', delay = '10 sec'): WinswWrapper;
+
     /**
-    * 服务失败后再次重置状态的时间间隔
-    * @param delay 
-    * @returns 
-    */
+     * 服务失败后再次重置状态的时间间隔
+     * @param delay 
+     * @returns 
+     */
     resetFailure(delay = '1 hour'): WinswWrapper;
+
     /**
      * 执行的参数
+     * @param arg
      */
     arguments(arg = ''): WinswWrapper;
+
     /**
-    * start时执行的参数，运行时会覆盖arguments指定的参数
-    */
+     * start时执行的参数，运行时会覆盖arguments指定的参数
+     * @param arg
+     */
     startarguments(arg = ''): WinswWrapper;
+
     /**
      * 执行时的工作目录
      * @param path 
@@ -263,23 +304,25 @@ export default class WinswWrapper extends EventEmitter {
      * @returns 
      */
     stopexecutable(path = ''): WinswWrapper;
+
     /**
-    * 用于停止服务时执行的可执行文件的参数
-    */
+     * 用于停止服务时执行的可执行文件的参数
+     * @param arg
+     */
     stoparguments(arg = ''): WinswWrapper;
 
     /**
-    * 服务启动模式
-    * @param mode 
-    * @returns 
-    */
+     * 服务启动模式
+     * @param mode 
+     * @returns 
+     */
     startmode(mode: StartmodeType = 'Automatic'): WinswWrapper;
 
     /**
-   * 服务启动时的等待时间
-   * @param delay 
-   * @returns 
-   */
+     * 服务启动时的等待时间
+     * @param enable 
+     * @returns 
+     */
     delayedAutoStart(enable: boolean = false): WinswWrapper;
 
     /**
@@ -288,22 +331,26 @@ export default class WinswWrapper extends EventEmitter {
      * @param value 
      * @returns 
      */
-    env(key, value): WinswWrapper;
+    env(key: string, value: any): WinswWrapper;
+
     /**
-    * 运行依赖的服务名称
-    * @param service 
-    * @returns 
-    */
-    depend(service): WinswWrapper;
+     * 运行依赖的服务名称
+     * @param service 
+     * @returns 
+     */
+    depend(service: string): WinswWrapper;
 
     /**
      * 设置服务日志的路径
+     * @param path 
      */
     logpath(path = ''): WinswWrapper;
 
     /**
-    * 设置服务日志新增模式
-    */
+     * 设置服务日志新增模式
+     * @param mode 
+     * @param options 
+     */
     logmode(mode: LogmodeType = 'append', options?: any): WinswWrapper;
 }
 type WinswEventStateType = 'error' | 'success'
