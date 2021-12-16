@@ -1,3 +1,9 @@
+# winsw Wrapper
+
+[![Github All Releases](https://img.shields.io/github/downloads/lunnlew/winsw-wrapper/total?style=flat-square)](https://github.com/lunnlew/winsw-wrapper/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/lunnlew/winsw-wrapper?include_prereleases&sort=semver&style=flat-square)](https://github.com/lunnlew/winsw-wrapper/releases)
+[![License](https://img.shields.io/github/license/lunnlew/winsw-wrapper?style=flat-square)](LICENSE.txt)
+
 # Installation
 
 ```bash
